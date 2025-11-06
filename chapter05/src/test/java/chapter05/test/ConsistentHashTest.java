@@ -95,4 +95,23 @@ public class ConsistentHashTest {
             assertTrue(server.equals(node1) || server.equals(node2) || server.equals(node3));
         }
     }
+
+    @Test
+    @DisplayName("노드 제거 후 키 재매핑 테스트")
+    void testKeyRemappingAfterNodeRemoval() {
+        ServerNode node1 = new ServerNode("Server1", "192.168.0.1", 8080);
+        ServerNode node2 = new ServerNode("Server2", "192.168.0.2", 8080);
+        consistentHash.add(node1, 100);
+        consistentHash.add(node2, 100);
+
+        String testKey = "keyToRemap";
+        ServerNode initialNode = consistentHash.get(testKey);
+        assertNotNull(initialNode);
+
+        consistentHash.remove(node1);
+
+        ServerNode remappedNode = consistentHash.get(testKey);
+        assertNotNull(remappedNode, "Key should be remapped to another node, not null");
+        assertFalse(remappedNode.equals(node1), "Key should not be mapped to the removed node");
+    }
 }
