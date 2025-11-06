@@ -1,0 +1,9 @@
+# IDE files
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+
+shuffle.py
+workbook_*.md
